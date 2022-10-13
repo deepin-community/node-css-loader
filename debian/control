@@ -1,0 +1,59 @@
+Source: node-css-loader
+Section: javascript
+Priority: optional
+Maintainer: Debian Javascript Maintainers <pkg-javascript-devel@lists.alioth.debian.org>
+Uploaders: Pirate Praveen <praveen@debian.org>
+Build-Depends: debhelper-compat (= 13)
+ , dh-sequence-nodejs
+ , jest <!nocheck>
+ , node-babel7
+ , node-babel-plugin-add-module-exports
+ , node-camelcase (>= 6.2~)
+ , node-cssesc (>= 3.0~)
+ , node-icss-utils (>= 5.0~)
+ , node-loader-utils (>= 2.0~)
+ , node-postcss (>= 8.1.4~)
+ , node-postcss-modules-extract-imports (>= 3.0~)
+# postcss-modules-local-by-default embedded
+# postcss-modules-scope embedded
+ , node-postcss-modules-values (>= 4.0~)
+ , node-postcss-value-parser (>= 4.1~)
+ , node-schema-utils (>= 3.0~)
+ , node-semver (>= 7.3.2~)
+# for embedded postcss-modules-local-by-default -> postcss-selector-parser
+ , node-uniq
+ , node-util-deprecate
+Standards-Version: 4.5.1
+Vcs-Browser: https://salsa.debian.org/js-team/node-css-loader
+Vcs-Git: https://salsa.debian.org/js-team/node-css-loader.git
+Homepage: https://github.com/webpack-contrib/css-loader
+Testsuite: autopkgtest-pkg-nodejs
+Rules-Requires-Root: no
+
+Package: node-css-loader
+Architecture: all
+Depends: ${misc:Depends}
+ , node-camelcase (>= 6.2~)
+ , node-cssesc (>= 3.0~)
+ , node-icss-utils (>= 5.0~)
+ , node-loader-utils (>= 2.0~)
+ , node-normalize-path
+ , node-postcss (>= 8.1.4~)
+ , node-postcss-modules-extract-imports (>= 3.0~)
+# postcss-modules-local-by-default embedded
+# postcss-modules-scope embedded
+ , node-postcss-modules-values (>= 4.0~)
+ , node-postcss-value-parser (>= 4.1~)
+ , node-schema-utils (>= 3.0~)
+ , node-semver (>= 7.3.2~)
+# for embedded postcss-modules-local-by-default -> postcss-selector-parser
+ , node-uniq
+ , node-util-deprecate
+Provides: ${nodejs:Provides}
+Description: css loader module for webpack
+ Webpack takes code targeted at node.js and makes it run in the browser.
+ Node.js comes with API of its own that is not available in the browsers.
+ Webpack exposes this code to programs that are unaware they are running in a
+ browser.
+ .
+ Node.js is an event-based server-side JavaScript engine.

@@ -1,0 +1,1 @@
+BABEL_ENV=publish babeljs src --out-dir dist --ignore /__tests__/

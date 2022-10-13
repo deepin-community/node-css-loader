@@ -1,0 +1,175 @@
+node-css-loader (5.0.1+~cs14.0.5-1) unstable; urgency=medium
+
+  * Update minimum versions of components to match package.json (ctype=nodejs
+    seems broken and always install latest versions. See #977889)
+    (Closes: #978127)
+  * New upstream version 5.0.1+~cs14.0.5
+
+ -- Pirate Praveen <praveen@debian.org>  Sat, 26 Dec 2020 17:03:59 +0530
+
+node-css-loader (5.0.1+~cs12.2.8-2) unstable; urgency=medium
+
+  * Reupload to unstable
+
+ -- Pirate Praveen <praveen@debian.org>  Fri, 25 Dec 2020 00:25:39 +0530
+
+node-css-loader (5.0.1+~cs12.2.8-1) experimental; urgency=medium
+
+  * Drop postcss-modules-values and postcss-modules-extract-imports components
+    (matching semver-major versions available in the archive)
+  * New upstream version 5.0.1+~cs12.2.8
+  * Drop schema-utils 3.0 compat patch (applied upstream)
+  * Update minimum versions of (build) dependencies
+  * Drop unused lintian overrides
+
+ -- Pirate Praveen <praveen@debian.org>  Sun, 20 Dec 2020 17:24:10 +0530
+
+node-css-loader (4.3.0+~cs17.2.8-2) unstable; urgency=medium
+
+  * Reupload to unstable after testing reverse (build) dependencies
+
+ -- Pirate Praveen <praveen@debian.org>  Sun, 20 Dec 2020 02:24:13 +0530
+
+node-css-loader (4.3.0+~cs17.2.8-1) experimental; urgency=medium
+
+  * Use latest tags in watch file
+  * New upstream version 4.3.0+~cs12.2.8
+  * Refresh patches
+  * Update minimum versions of dependencies
+  * Drop postcss-value-parser component (required version present in the
+    archive)
+  * Use checksum option for all components
+  * New upstream version 4.3.0+~cs17.2.8
+
+ -- Pirate Praveen <praveen@debian.org>  Sun, 20 Dec 2020 00:53:46 +0530
+
+node-css-loader (3.2.1+~cs21.3.8.1-3) unstable; urgency=medium
+
+  * Team upload
+  * Dependencies:
+    + remove node-babel7, node-lodash, node-normalize-path, node-camelcase,
+      nodejs (Closes: #977668)
+    + add node-camelcase, node-normalize-path
+
+ -- Xavier Guimard <yadd@debian.org>  Fri, 18 Dec 2020 17:02:46 +0100
+
+node-css-loader (3.2.1+~cs21.3.8.1-2) unstable; urgency=medium
+
+  * Expose unpackaged modules in /usr/share/nodejs
+
+ -- Pirate Praveen <praveen@debian.org>  Sun, 06 Dec 2020 18:38:12 +0530
+
+node-css-loader (3.2.1+~cs21.3.8.1-1) unstable; urgency=medium
+
+  * Add postcss-modules-extract-imports 2.0 as component
+  * New upstream version 3.2.1+~cs16.0.5
+  * Drop dependency on added component and don't install as root modules
+  * Update watch file to force 3.x version for postcss-modules-local-by-default
+  * New upstream version 3.2.1+~cs15.0.8
+  * postcss-modules-scope 2.x is required
+  * New upstream version 3.2.1+~cs14.2.8
+  * Add postcss-modules-values 3.x as component
+  * New upstream version 3.2.1+~cs17.2.8
+  * Add postcss-value-parser 3.x as component
+  * New upstream version 3.2.1+~cs20.5.9
+  * Update postcss-value-parser to 4.x
+  * New upstream version 3.2.1+~cs21.3.8
+  * New upstream version 3.2.1+~cs21.3.8.1 (Closes: #976310)
+  * Update minimum version of node-icss-utils
+  * Add copyright for newly added components
+
+ -- Pirate Praveen <praveen@debian.org>  Sat, 05 Dec 2020 20:37:30 +0530
+
+node-css-loader (3.2.1+~cs14.0.5-3) unstable; urgency=medium
+
+  * Team upload
+  * Add ctype=nodejs to component(s)
+  * Fix schema-utils version in package.json (Closes: #976310)
+
+ -- Xavier Guimard <yadd@debian.org>  Fri, 04 Dec 2020 20:50:46 +0100
+
+node-css-loader (3.2.1+~cs14.0.5-2) unstable; urgency=medium
+
+  * Team upload
+  * Back to unstable after successful test
+
+ -- Xavier Guimard <yadd@debian.org>  Thu, 19 Nov 2020 08:38:02 +0100
+
+node-css-loader (3.2.1+~cs14.0.5-1) experimental; urgency=medium
+
+  * Team upload
+  * Declare compliance with policy 4.5.1
+  * debian/watch: use checksum
+  * New upstream version 3.2.1+~cs14.0.5:
+    Updates: postcss-selector-parser from 6.0.1 to 6.0.4
+  * Add dependency to node-util-deprecate
+  * Add fix for node-schema-utils ≥ 3
+  * Enable part of upstream test using jest
+
+ -- Xavier Guimard <yadd@debian.org>  Wed, 18 Nov 2020 14:51:33 +0100
+
+node-css-loader (3.2.1-1) unstable; urgency=medium
+
+  * Team upload
+  * Bump debhelper compatibility level to 13
+  * Use dh-sequence-nodejs
+  * New upstream version 3.2.1
+  * refresh patch
+  * Refresh lintian overrides
+
+ -- Xavier Guimard <yadd@debian.org>  Mon, 19 Oct 2020 17:04:15 +0200
+
+node-css-loader (2.1.1-1) unstable; urgency=medium
+
+  * Update watch file to tighten versions
+  * New upstream version 2.1.1
+  * Drop patches not needed anymore
+  * Disable tests (now upstream uses jest)
+  * Build with babeljs
+  * Add node-schema-utils as dependency
+  * Add component postcss-selector-parser
+  * Add component: indexes-of
+  * Update dependencies
+  * Update lintian overrides
+  * Update copyright for embedded modules
+
+ -- Pirate Praveen <praveen@debian.org>  Fri, 15 May 2020 16:37:26 +0530
+
+node-css-loader (1.0.1+repack-2) unstable; urgency=medium
+
+  * Team upload
+  * Update node-babel-code-frame dependency to node-babel7
+  * Drop sourcemap test incompatible with node-postcss ≥ 7
+
+ -- Xavier Guimard <yadd@debian.org>  Fri, 08 May 2020 10:28:24 +0200
+
+node-css-loader (1.0.1+repack-1) unstable; urgency=medium
+
+  * Team upload
+  * Declare compliance with policy 4.5.0
+  * Bump debhelper compatibility level to 12
+  * Use pkg-js-tools auto test & install
+  * Replace embedded modules by uscan components and repack
+  * Add "Rules-Requires-Root: no"
+  * Add upstream/metadata
+  * Update lintian overrides
+
+ -- Xavier Guimard <yadd@debian.org>  Sat, 22 Feb 2020 09:39:42 +0100
+
+node-css-loader (1.0.1-1) unstable; urgency=medium
+
+  [ Paolo Greppi ]
+  * Update Vcs fields for migration to https://salsa.debian.org/
+
+  [ Pirate Praveen ]
+  * New upstream version 1.0.1
+  * Bump debhelper compatibility level to 11
+  * Bump Standards-Version to 4.2.1 (no changes needed)
+
+ -- Pirate Praveen <praveen@debian.org>  Sat, 10 Nov 2018 21:02:00 +0530
+
+node-css-loader (0.28.9-1) unstable; urgency=low
+
+  * Initial release (Closes: #888279)
+
+ -- Pirate Praveen <praveen@debian.org>  Wed, 24 Jan 2018 20:37:07 +0530

@@ -1,0 +1,1 @@
+jest -u --ci test/runtime/getUrl.test.js test/runtime/api.test.js test/cjs.test.js

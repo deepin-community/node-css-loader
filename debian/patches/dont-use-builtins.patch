@@ -1,0 +1,12 @@
+Use default options fo Builtins
+
+--- a/postcss-selector-parser/.babelrc
++++ b/postcss-selector-parser/.babelrc
+@@ -1,6 +1,6 @@
+ {
+     "presets": [
+-        ["@babel/preset-env", { "loose": true, "useBuiltIns": "entry" }]
++        ["@babel/preset-env"]
+     ],
+     "plugins": [
+         ["@babel/proposal-class-properties", { "loose": true }],

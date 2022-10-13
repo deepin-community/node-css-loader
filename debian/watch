@@ -1,0 +1,29 @@
+version=4
+opts=\
+dversionmangle=auto,\
+filenamemangle=s/.*\/v?([\d\.-]+)\.tar\.gz/node-css-loader-$1.tar.gz/ \
+ https://github.com/webpack-contrib/css-loader/tags .*/archive/v?([\d\.]+).tar.gz group
+
+opts=ctype=nodejs,\
+component=postcss-modules-local-by-default,\
+dversionmangle=auto,\
+filenamemangle=s/.*\/v?([\d\.-]+)\.tar\.gz/node-postcss-modules-local-by-default-$1.tar.gz/ \
+ https://github.com/css-modules/postcss-modules-local-by-default/tags .*/archive/v?(4(?:.[\d\.]+)?).tar.gz checksum
+
+opts=ctype=nodejs,\
+component=postcss-modules-scope,\
+dversionmangle=auto,\
+filenamemangle=s/.*\/v?([\d\.-]+)\.tar\.gz/node-postcss-modules-scope-$1.tar.gz/ \
+ https://github.com/css-modules/postcss-modules-scope/tags .*/archive/v?(3(?:.[\d\.]+)?).tar.gz checksum
+
+# It is not recommended use npmregistry. Please investigate more.
+# Take a look at https://wiki.debian.org/debian/watch/
+opts="searchmode=plain,ctype=nodejs,component=indexes-of,pgpmode=none" \
+ https://registry.npmjs.org/indexes-of https://registry.npmjs.org/indexes-of/-/indexes-of-(1(?:.[\d\.]+)?)@ARCHIVE_EXT@ checksum
+
+# For postcss-modules-local-by-default
+opts=ctype=nodejs,\
+component=postcss-selector-parser,\
+dversionmangle=auto,\
+filenamemangle=s/.*\/v?([\d\.-]+)\.tar\.gz/node-postcss-selector-parser-$1.tar.gz/ \
+ https://github.com/postcss/postcss-selector-parser/tags .*/archive/v?(6[\d\.]+).tar.gz checksum

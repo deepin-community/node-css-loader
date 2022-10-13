@@ -1,0 +1,1 @@
+NODE_ENV=production babeljs src -d dist --ignore 'src/**/*.test.js' --copy-files
