@@ -1,0 +1,3 @@
+very-long-line-length-in-source-file *.snap*
+very-long-line-length-in-source-file *CHANGELOG.md*
+very-long-line-length-in-source-file *test/fixtures/*
