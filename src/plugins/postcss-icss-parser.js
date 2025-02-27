@@ -1,15 +1,25 @@
-import { extractICSS, replaceValueSymbols, replaceSymbols } from 'icss-utils';
+import { extractICSS, replaceValueSymbols, replaceSymbols } from "icss-utils";
 
-import { normalizeUrl, resolveRequests, requestify } from '../utils';
+import { normalizeUrl, resolveRequests, requestify } from "../utils";
 
 const plugin = (options = {}) => {
   return {
-    postcssPlugin: 'postcss-icss-parser',
+    postcssPlugin: "postcss-icss-parser",
     async OnceExit(root) {
       const importReplacements = Object.create(null);
       const { icssImports, icssExports } = extractICSS(root);
       const imports = new Map();
       const tasks = [];
+
+      const { loaderContext } = options;
+      const resolver = loaderContext.getResolve({
+        dependencyType: "icss",
+        conditionNames: ["style"],
+        extensions: ["..."],
+        mainFields: ["css", "style", "main", "..."],
+        mainFiles: ["index", "..."],
+        preferRelative: true,
+      });
 
       // eslint-disable-next-line guard-for-in
       for (const url in icssImports) {
@@ -21,25 +31,31 @@ const plugin = (options = {}) => {
         }
 
         let normalizedUrl = url;
-        let prefix = '';
+        let prefix = "";
 
-        const queryParts = normalizedUrl.split('!');
+        const queryParts = normalizedUrl.split("!");
 
         if (queryParts.length > 1) {
           normalizedUrl = queryParts.pop();
-          prefix = queryParts.join('!');
+          prefix = queryParts.join("!");
         }
 
         const request = requestify(
           normalizeUrl(normalizedUrl, true),
-          options.rootContext
+          loaderContext.rootContext
         );
         const doResolve = async () => {
-          const { resolver, context } = options;
-          const resolvedUrl = await resolveRequests(resolver, context, [
-            ...new Set([normalizedUrl, request]),
-          ]);
+          const resolvedUrl = await resolveRequests(
+            resolver,
+            loaderContext.context,
+            [...new Set([normalizedUrl, request])]
+          );
 
+          if (!resolvedUrl) {
+            return;
+          }
+
+          // eslint-disable-next-line consistent-return
           return { url: resolvedUrl, prefix, tokens };
         };
 
@@ -49,8 +65,14 @@ const plugin = (options = {}) => {
       const results = await Promise.all(tasks);
 
       for (let index = 0; index <= results.length - 1; index++) {
-        const { url, prefix, tokens } = results[index];
-        const newUrl = prefix ? `${prefix}!${url}` : url;
+        const item = results[index];
+
+        if (!item) {
+          // eslint-disable-next-line no-continue
+          continue;
+        }
+
+        const newUrl = item.prefix ? `${item.prefix}!${item.url}` : item.url;
         const importKey = newUrl;
         let importName = imports.get(importKey);
 
@@ -59,6 +81,7 @@ const plugin = (options = {}) => {
           imports.set(importKey, importName);
 
           options.imports.push({
+            type: "icss_import",
             importName,
             url: options.urlHandler(newUrl),
             icss: true,
@@ -68,9 +91,11 @@ const plugin = (options = {}) => {
           options.api.push({ importName, dedupe: true, index });
         }
 
-        for (const [replacementIndex, token] of Object.keys(tokens).entries()) {
+        for (const [replacementIndex, token] of Object.keys(
+          item.tokens
+        ).entries()) {
           const replacementName = `___CSS_LOADER_ICSS_IMPORT_${index}_REPLACEMENT_${replacementIndex}___`;
-          const localName = tokens[token];
+          const localName = item.tokens[token];
 
           importReplacements[token] = replacementName;
 

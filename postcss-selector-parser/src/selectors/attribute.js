@@ -5,7 +5,7 @@ import {ATTRIBUTE} from './types';
 
 const deprecate = require("util-deprecate");
 
-const WRAPPED_IN_QUOTES = /^('|")(.*)\1$/;
+const WRAPPED_IN_QUOTES = /^('|")([^]*)\1$/;
 
 const warnOfDeprecatedValueAssignment = deprecate(() => {},
     "Assigning an attribute a value containing characters that might need to be escaped is deprecated. " +
@@ -236,6 +236,31 @@ export default class Attribute extends Namespace {
 
     get value () {
         return this._value;
+    }
+
+    get insensitive () {
+        return this._insensitive;
+    }
+
+    /**
+     * Set the case insensitive flag.
+     * If the case insensitive flag changes, the raw (escaped) value at `attr.raws.insensitiveFlag`
+     * of the attribute is updated accordingly.
+     *
+     * @param {true | false} insensitive true if the attribute should match case-insensitively.
+     */
+    set insensitive (insensitive) {
+        if (!insensitive) {
+            this._insensitive = false;
+
+            // "i" and "I" can be used in "this.raws.insensitiveFlag" to store the original notation.
+            // When setting `attr.insensitive = false` both should be erased to ensure correct serialization.
+            if (this.raws && (this.raws.insensitiveFlag === 'I' || this.raws.insensitiveFlag === 'i')) {
+                this.raws.insensitiveFlag = undefined;
+            }
+        }
+
+        this._insensitive = insensitive;
     }
 
     /**

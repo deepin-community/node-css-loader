@@ -161,6 +161,26 @@ const tests = [
     expected: ":local(.foo) { animation-name: :local(bar); }",
   },
   {
+    name: "not localize animation-name in a var function",
+    input: ".foo { animation-name: var(--bar); }",
+    expected: ":local(.foo) { animation-name: var(--bar); }",
+  },
+  {
+    name: "not localize animation-name in a var function #2",
+    input: ".foo { animation-name: vAr(--bar); }",
+    expected: ":local(.foo) { animation-name: vAr(--bar); }",
+  },
+  {
+    name: "not localize animation-name in an env function",
+    input: ".foo { animation-name: env(bar); }",
+    expected: ":local(.foo) { animation-name: env(bar); }",
+  },
+  {
+    name: "not localize animation-name in an env function #2",
+    input: ".foo { animation-name: eNv(bar); }",
+    expected: ":local(.foo) { animation-name: eNv(bar); }",
+  },
+  {
     name: "not localize a single animation-delay",
     input: ".foo { animation-delay: 1s; }",
     expected: ":local(.foo) { animation-delay: 1s; }",
@@ -171,9 +191,129 @@ const tests = [
     expected: ":local(.foo) { animation-name: :local(bar), :local(foobar); }",
   },
   {
+    name: "not localize revert",
+    input: ".foo { animation: revert; }",
+    expected: ":local(.foo) { animation: revert; }",
+  },
+  {
+    name: "not localize revert #2",
+    input: ".foo { animation-name: revert; }",
+    expected: ":local(.foo) { animation-name: revert; }",
+  },
+  {
+    name: "not localize revert #3",
+    input: ".foo { animation-name: revert, foo, none; }",
+    expected: ":local(.foo) { animation-name: revert, :local(foo), none; }",
+  },
+  {
+    name: "not localize revert-layer",
+    input: ".foo { animation: revert-layer; }",
+    expected: ":local(.foo) { animation: revert-layer; }",
+  },
+  {
+    name: "not localize revert",
+    input: ".foo { animation-name: revert-layer; }",
+    expected: ":local(.foo) { animation-name: revert-layer; }",
+  },
+  {
+    name: "localize animation using special characters",
+    input: ".foo { animation: \\@bounce; }",
+    expected: ":local(.foo) { animation: :local(\\@bounce); }",
+  },
+  {
+    name: "localize animation using special characters",
+    input: ".foo { animation: bou\\@nce; }",
+    expected: ":local(.foo) { animation: :local(bou\\@nce); }",
+  },
+  {
+    name: "localize animation using special characters",
+    input: ".foo { animation: \\ as; }",
+    expected: ":local(.foo) { animation: :local(\\ as); }",
+  },
+  {
+    name: "localize animation using special characters",
+    input: ".foo { animation: t\\ t; }",
+    expected: ":local(.foo) { animation: :local(t\\ t); }",
+  },
+  {
+    name: "localize animation using special characters",
+    input: ".foo { animation: -\\a; }",
+    expected: ":local(.foo) { animation: :local(-\\a); }",
+  },
+  {
+    name: "localize animation using special characters",
+    input: ".foo { animation: --\\a; }",
+    expected: ":local(.foo) { animation: :local(--\\a); }",
+  },
+  {
+    name: "localize animation using special characters",
+    input: ".foo { animation: \\a; }",
+    expected: ":local(.foo) { animation: :local(\\a); }",
+  },
+  {
+    name: "localize animation using special characters",
+    input: ".foo { animation: -\\a; }",
+    expected: ":local(.foo) { animation: :local(-\\a); }",
+  },
+  {
+    name: "localize animation using special characters",
+    input: ".foo { animation: --; }",
+    expected: ":local(.foo) { animation: :local(--); }",
+  },
+  {
+    name: "localize animation using special characters",
+    input: ".foo { animation: 😃bounce😃; }",
+    expected: ":local(.foo) { animation: :local(😃bounce😃); }",
+  },
+  {
+    name: "not localize revert",
+    input: ".foo { animation: --foo; }",
+    expected: ":local(.foo) { animation: :local(--foo); }",
+  },
+  {
+    name: "not localize name in nested function",
+    input: ".foo { animation: fade .2s var(--easeOutQuart) .1s forwards }",
+    expected:
+      ":local(.foo) { animation: :local(fade) .2s var(--easeOutQuart) .1s forwards }",
+  },
+  {
+    name: "not localize name in nested function #2",
+    input: ".foo { animation: fade .2s env(FOO_BAR) .1s forwards, name }",
+    expected:
+      ":local(.foo) { animation: :local(fade) .2s env(FOO_BAR) .1s forwards, :local(name) }",
+  },
+  {
+    name: "not localize name in nested function #3",
+    input: ".foo { animation: var(--foo-bar) .1s forwards, name }",
+    expected:
+      ":local(.foo) { animation: var(--foo-bar) .1s forwards, :local(name) }",
+  },
+  {
+    name: "not localize name in nested function #3",
+    input: ".foo { animation: var(--foo-bar) .1s forwards name, name }",
+    expected:
+      ":local(.foo) { animation: var(--foo-bar) .1s forwards :local(name), :local(name) }",
+  },
+  {
     name: "localize animation",
+    input: ".foo { animation: a; }",
+    expected: ":local(.foo) { animation: :local(a); }",
+  },
+  {
+    name: "localize animation #2",
     input: ".foo { animation: bar 5s, foobar; }",
     expected: ":local(.foo) { animation: :local(bar) 5s, :local(foobar); }",
+  },
+  {
+    name: "localize animation #3",
+    input: ".foo { animation: ease ease; }",
+    expected: ":local(.foo) { animation: ease :local(ease); }",
+  },
+  {
+    name: "localize animation #4",
+    input: ".foo { animation: 0s ease 0s 1 normal none test running; }",
+    expected:
+      ":local(.foo) { animation: 0s ease 0s 1 normal none :local(test) running; }",
   },
   {
     name: "localize animation with vendor prefix",
@@ -192,6 +332,51 @@ const tests = [
     expected: ".foo { animation: foo; animation-name: bar; }",
   },
   {
+    name: "handle nested global",
+    input: ":global .a:not(:global .b) {}",
+    expected: ".a:not(.b) {}",
+  },
+  {
+    name: "handle nested global #1",
+    input: ":global .a:not(:global .b:not(:global .c)) {}",
+    expected: ".a:not(.b:not(.c)) {}",
+  },
+  {
+    name: "handle nested global #2",
+    input: ":local .a:not(:not(:not(:global .c))) {}",
+    expected: ":local(.a):not(:not(:not(.c))) {}",
+  },
+  {
+    name: "handle nested global #3",
+    input: ":global .a:not(:global .b, :global .c) {}",
+    expected: ".a:not(.b, .c) {}",
+  },
+  {
+    name: "handle nested global #4",
+    input: ":local .a:not(:global .b, :local .c) {}",
+    expected: ":local(.a):not(.b, :local(.c)) {}",
+  },
+  {
+    name: "handle nested global #5",
+    input: ":global .a:not(:local .b, :global .c) {}",
+    expected: ".a:not(:local(.b), .c) {}",
+  },
+  {
+    name: "handle nested global #6",
+    input: ":global .a:not(.b, .c) {}",
+    expected: ".a:not(.b, .c) {}",
+  },
+  {
+    name: "handle nested global #7",
+    input: ":local .a:not(.b, .c) {}",
+    expected: ":local(.a):not(:local(.b), :local(.c)) {}",
+  },
+  {
+    name: "handle nested global #8",
+    input: ":global .a:not(:local .b, .c) {}",
+    expected: ".a:not(:local(.b), :local(.c)) {}",
+  },
+  {
     name: "handle a complex animation rule",
     input:
       ".foo { animation: foo, bar 5s linear 2s infinite alternate, barfoo 1s; }",
@@ -204,23 +389,20 @@ const tests = [
     expected: ":local(.foo) { animation: 1s :local(foo); }",
   },
   {
-    name:
-      "handle animations where the first value is not the animation name whilst also using keywords",
+    name: "handle animations where the first value is not the animation name whilst also using keywords",
     input: ".foo { animation: 1s normal ease-out infinite foo; }",
     expected:
       ":local(.foo) { animation: 1s normal ease-out infinite :local(foo); }",
   },
   {
-    name:
-      "not treat animation curve as identifier of animation name even if it separated by comma",
+    name: "not treat animation curve as identifier of animation name even if it separated by comma",
     input:
       ".foo { animation: slide-right 300ms forwards ease-out, fade-in 300ms forwards ease-out; }",
     expected:
       ":local(.foo) { animation: :local(slide-right) 300ms forwards ease-out, :local(fade-in) 300ms forwards ease-out; }",
   },
   {
-    name:
-      'not treat "start" and "end" keywords in steps() function as identifiers',
+    name: 'not treat "start" and "end" keywords in steps() function as identifiers',
     input: [
       ".foo { animation: spin 1s steps(12, end) infinite; }",
       ".foo { animation: spin 1s STEPS(12, start) infinite; }",
@@ -302,6 +484,18 @@ const tests = [
     input: "@keyframes foo { from { color: red; } to { color: blue; } }",
     expected:
       "@keyframes :local(foo) { from { color: red; } to { color: blue; } }",
+  },
+  {
+    name: "localize keyframes starting with special characters",
+    input: "@keyframes \\@foo { from { color: red; } to { color: blue; } }",
+    expected:
+      "@keyframes :local(\\@foo) { from { color: red; } to { color: blue; } }",
+  },
+  {
+    name: "localize keyframes containing special characters",
+    input: "@keyframes f\\@oo { from { color: red; } to { color: blue; } }",
+    expected:
+      "@keyframes :local(f\\@oo) { from { color: red; } to { color: blue; } }",
   },
   {
     name: "localize keyframes in global default mode",
@@ -644,6 +838,11 @@ const tests = [
     name: "throw on invalid global class usage",
     input: ":global(#) {}",
     error: /Invalid class or id selector syntax/,
+  },
+  {
+    name: "throw on invalid global class usage",
+    input: ":global(.a:not(:global .b, :global .c)) {}",
+    error: /A :global is not allowed inside of a :global/,
   },
   /*
   Bug in postcss-selector-parser

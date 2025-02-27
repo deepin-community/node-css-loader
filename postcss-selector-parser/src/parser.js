@@ -1,6 +1,3 @@
-import indexesOf from 'indexes-of';
-import uniq from 'uniq';
-
 import Root from './selectors/root';
 import Selector from './selectors/selector';
 import ClassName from './selectors/className';
@@ -96,6 +93,23 @@ function unescapeProp (node, prop) {
         }
     }
     return node;
+}
+
+function indexesOf (array, item) {
+    let i = -1;
+    const indexes = [];
+
+    while ((i = array.indexOf(item, i + 1)) !== -1) {
+        indexes.push(i);
+    }
+
+    return indexes;
+}
+
+function uniqs () {
+    const list = Array.prototype.concat.apply([], arguments);
+
+    return list.filter((item, i) => i === list.indexOf(item));
 }
 
 export default class Parser {
@@ -287,7 +301,7 @@ export default class Parser {
                         node.raws.attribute += content;
                     }
                     lastAdded = 'attribute';
-                } else if ((!node.value && node.value !== "") || (lastAdded === "value" && !spaceAfterMeaningfulToken)) {
+                } else if ((!node.value && node.value !== "") || (lastAdded === "value" && !(spaceAfterMeaningfulToken || node.quoteMark))) {
                     let unescaped = unesc(content);
                     let oldRawValue = getProp(node, 'raws', 'value') || '';
                     let oldValue = node.value || '';
@@ -450,8 +464,8 @@ export default class Parser {
     }
 
     /**
-     * 
-     * @param {*} nodes 
+     *
+     * @param {*} nodes
      */
     convertWhitespaceNodesToSpace (nodes, requiredSpace = false) {
         let space = "";
@@ -632,6 +646,10 @@ export default class Parser {
         return this.error(`Unexpected '${this.content()}'. Escaping special characters with \\ may help.`, this.currToken[TOKEN.START_POS]);
     }
 
+    unexpectedPipe () {
+        return this.error(`Unexpected '|'.`, this.currToken[TOKEN.START_POS]);
+    }
+
     namespace () {
         const before = this.prevToken && this.content(this.prevToken) || true;
         if (this.nextToken[TOKEN.TYPE] === tokens.word) {
@@ -641,6 +659,8 @@ export default class Parser {
             this.position ++;
             return this.universal(before);
         }
+
+        this.unexpectedPipe();
     }
 
     nesting () {
@@ -822,14 +842,20 @@ export default class Parser {
             }
             nextToken = this.nextToken;
         }
-        const hasClass = indexesOf(word, '.').filter(i => word[i - 1] !== '\\');
+        const hasClass = indexesOf(word, '.').filter(i => {
+            // Allow escaped dot within class name
+            const escapedDot = word[i - 1] === '\\';
+            // Allow decimal numbers percent in @keyframes
+            const isKeyframesPercent = /^\d+\.\d+%$/.test(word);
+            return !escapedDot && !isKeyframesPercent;
+        });
         let hasId = indexesOf(word, '#').filter(i => word[i - 1] !== '\\');
         // Eliminate Sass interpolations from the list of id indexes
         const interpolations = indexesOf(word, '#{');
         if (interpolations.length) {
             hasId = hasId.filter(hashIndex => !~interpolations.indexOf(hashIndex));
         }
-        let indices = sortAsc(uniq([0, ...hasClass, ...hasId]));
+        let indices = sortAsc(uniqs([0, ...hasClass, ...hasId]));
         indices.forEach((ind, i) => {
             const index = indices[i + 1] || word.length;
             const value = word.slice(ind, index);
